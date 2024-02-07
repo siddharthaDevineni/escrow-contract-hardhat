@@ -1,8 +1,7 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import Escrow from "./Escrow";
-
-const getContractInstance = require("./getContractInstance");
+// import { networks } from "../../hardhat.config";
 
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
@@ -31,7 +30,11 @@ function App() {
     const beneficiary = document.getElementById("beneficiary").value;
     const arbiter = document.getElementById("arbiter").value;
     const value = ethers.BigNumber.from(document.getElementById("wei").value);
-    const escrowContract = await getContractInstance();
+    const escrowContract = new ethers.Contract(
+      "0xC92671A8f7f33E379f0AC88749A6Aba8058541be", // contract deployed address on goerli network
+      Escrow.abi,
+      signer
+    );
 
     const escrow = {
       address: escrowContract.address,
