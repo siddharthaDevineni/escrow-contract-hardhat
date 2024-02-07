@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.17;
+pragma solidity ^0.8.17;
 
 contract Escrow {
 	address public arbiter;
@@ -17,7 +17,7 @@ contract Escrow {
 	event Approved(uint);
 
 	function approve() external {
-		require(msg.sender == arbiter);
+		require(msg.sender == arbiter, "You're not an Arbiter");
 		uint balance = address(this).balance;
 		(bool sent, ) = payable(beneficiary).call{value: balance}("");
  		require(sent, "Failed to send Ether");
