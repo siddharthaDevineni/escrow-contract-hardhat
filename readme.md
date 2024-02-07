@@ -1,3 +1,7 @@
+# escrow-contract-hardhat
+
+Escrow smart contract where there is a depositor, beneficiary and arbiter who approves the transaction. Submission of assignment to Alchemy University.
+
 # Decentralized Escrow Application
 
 This is an Escrow Dapp built with [Hardhat](https://hardhat.org/).
@@ -23,4 +27,3 @@ Compile the contracts using `npx hardhat compile`. The artifacts will be placed 
 `cd` into the `/app` directory and run `npm install`
 
 To run the front-end application run `npm start` from the `/app` directory. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
