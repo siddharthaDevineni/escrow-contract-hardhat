@@ -1,15 +1,15 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-import Escrow from "./Escrow";
-// import { networks } from "../../hardhat.config";
+import Escrow from "./Escrow.js";
+import ABI from "./artifacts/contracts/Escrow.sol/Escrow.json";
 
+const escrAddr = "0xCb6041C7C8AD0328593ecb16cb9B71D00169321e";
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
 export async function approve(escrowContract, signer) {
   const approveTxn = await escrowContract.connect(signer).approve();
   await approveTxn.wait();
 }
-
 function App() {
   const [escrows, setEscrows] = useState([]);
   const [account, setAccount] = useState();
@@ -24,32 +24,30 @@ function App() {
     }
 
     getAccounts();
-  }, [account]);
+  }, [account, signer, escrows]);
 
   async function newContract() {
     const beneficiary = document.getElementById("beneficiary").value;
     const arbiter = document.getElementById("arbiter").value;
     const value = ethers.BigNumber.from(document.getElementById("wei").value);
-    const escrowContract = new ethers.Contract(
-      "0xC92671A8f7f33E379f0AC88749A6Aba8058541be", // contract deployed address on goerli network
-      Escrow.abi,
-      signer
-    );
+
+    const contract = new ethers.Contract(escrAddr, ABI.abi, signer);
+
+    console.log("escrowContract address: ", contract.address);
 
     const escrow = {
-      address: escrowContract.address,
+      address: contract.address,
       arbiter,
       beneficiary,
       value: value.toString(),
       handleApprove: async () => {
-        escrowContract.on("Approved", () => {
-          document.getElementById(escrowContract.address).className =
-            "complete";
-          document.getElementById(escrowContract.address).innerText =
+        contract.on("Approved", () => {
+          document.getElementById(contract.address).className = "complete";
+          document.getElementById(contract.address).innerText =
             "✓ It's been approved!";
         });
-
-        await approve(escrowContract, signer);
+        console.log("signer address: ", signer);
+        await approve(contract, signer);
       },
     };
 

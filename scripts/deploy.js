@@ -1,6 +1,8 @@
 const ethers = require("ethers");
 require("dotenv").config();
 
+// Escrow address:  0xCb6041C7C8AD0328593ecb16cb9B71D00169321e
+
 async function main() {
   const url = process.env.GOERLI_URL;
   const privateKey = process.env.PRIVATE_KEY;
